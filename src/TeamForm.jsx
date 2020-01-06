@@ -1,9 +1,7 @@
 import * as Yup from "yup";
 
-import { Form, Formik } from "formik";
-
 import Field from "./Field";
-import PromptIfDirty from "./PromptIfDirty";
+import FormikWrapper from "./FormikWrapper";
 import React from "react";
 
 const TeamForm = ({
@@ -15,7 +13,7 @@ const TeamForm = ({
   }
 }) => {
   return (
-    <Formik
+    <FormikWrapper
       initialValues={{ name: "", location: "" }}
       validationSchema={Yup.object({
         name: Yup.string()
@@ -28,14 +26,12 @@ const TeamForm = ({
       onSubmit={onSubmit}
     >
       {formik => (
-        <Form onSubmit={formik.handleSubmit}>
-          <PromptIfDirty />
+        <React.Fragment>
           <Field name="name" label="Team Name" autoFocus />
           <Field name="location" label="Location" />
-          <button type="submit">Submit</button>
-        </Form>
+        </React.Fragment>
       )}
-    </Formik>
+    </FormikWrapper>
   );
 };
 
