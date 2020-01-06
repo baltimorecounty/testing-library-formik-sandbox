@@ -1,34 +1,24 @@
-import FormikWrapper from "./FormikWrapper";
 import PlayerForm from "./PlayerForm";
 import React from "react";
 import TeamForm from "./TeamForm";
+import { withFormik } from "formik";
 
 const forms = [
   {
     id: 1,
-    component: <TeamForm />
+    renderForm: props => <TeamForm {...props} />
   },
   {
     id: 2,
-    component: <PlayerForm />
+    renderForm: props => <PlayerForm {...props} />
   }
 ];
 
 const MultiPageForm = props => {
-  const { activeFormId = 1 } = props;
-  const { component: ActiveForm = null } = forms.find(
-    x => x.id === activeFormId
-  );
+  const { activeFormId = 1, ...rest } = props;
+  const { renderForm = () => {} } = forms.find(x => x.id === activeFormId);
 
-  return (
-    <FormikWrapper
-      initialValues={{}}
-      onSubmit={console.log}
-      validationSchema={{}}
-    >
-      {formik => <ActiveForm {...formik} />}
-    </FormikWrapper>
-  );
+  return <div>{renderForm(rest)}</div>;
 };
 
-export default MultiPageForm;
+export default withFormik({ displayName: "Multi Page Form" })(MultiPageForm);
